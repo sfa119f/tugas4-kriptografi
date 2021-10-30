@@ -7,7 +7,7 @@ def isPrime(n):
   else:
     maxVal = int(n**0.5)
     temp = 5
-    while f <= maxVal:
+    while temp <= maxVal:
       if n % temp == 0: return False
       if n % (temp + 2) == 0: return False
       temp += 6

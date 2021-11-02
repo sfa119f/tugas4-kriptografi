@@ -1,3 +1,16 @@
+from function import isPrime
+
+def isRsaValidatePQ(pValue, qValue):
+  if isPrime(pValue) && isPrime(qValue):
+    return True
+  return False
+
+def isRsaValidateEkey(eKey, pValue, qValue):
+  phi = (pValue - 1) * (qValue - 1)
+  if gcd(eKey, phi) == 1:
+    return True
+  return False
+
 def makePbKeyRsa(pValue, qValue, eKey):
 # Menghitung public key algoritma RSA
   return eKey, (pValue * qValue)

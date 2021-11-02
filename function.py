@@ -36,3 +36,54 @@ def invMod(val1, val2):
   if b != 1:
     return None
   return x % val2
+
+def blockMessage(n):
+# Value block message dengan panjang n
+  if n == 0: return 0
+  if n == 1: return 10
+  else: return blockMessage(n - 2) * 100 + 25
+
+def makeBlockMessage(nValue, text):
+# Membuat block message dari text dengan batas nValue
+  if nValue < 25:
+    lenVal = 1
+  else:
+    lenVal = 2
+    while blockMessage(lenVal + 2) < nValue:
+      lenVal += 2
+  
+  if len(text) % (lenVal // 2) != 0:
+    text += 'X' * ((lenVal // 2) - (len(text) % (lenVal // 2)))
+
+  res = []
+  for i in range(0, len(text), (lenVal // 2)):
+    if lenVal == 1:
+      res.append(ord(text[i]) - ord('A') // 10)
+      res.append(ord(text[i]) - ord('A') % 10)
+    else:
+      blockDigit = 0
+      for j in range(i, i + (lenVal // 2)):
+        blockDigit = blockDigit * 100 + (ord(text[j]) - ord('A'))
+      res.append(blockDigit)
+  
+  return lenVal, res
+
+def blockMessageToText(lenVal, mArray):
+# Convert block message to text
+  res = ''
+  i = 0
+  while i < len(mArray):
+    if lenVal == 1:
+      res += chr(mArray[i] * 10 + mArray[i+1])
+      i += 2
+    else:
+      tres1 = ''
+      if mArray[i] // (10 ** (lenVal - 2)) == 0:
+        tres2 = 'A'
+      else: tres2 = ''
+      while mArray[i] != 0:
+        tres1 = chr(mArray[i] % 100 + ord('A')) + tres1
+        mArray[i] //= 100
+      res += (tres2 + tres1)
+      i += 1
+  return res

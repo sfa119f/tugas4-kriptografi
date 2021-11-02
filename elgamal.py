@@ -1,4 +1,4 @@
-from function import isPrime
+from function import blockMessageToText, isPrime, makeBlockMessage
 from math import pow
 import random
 
@@ -22,32 +22,28 @@ def makePlain(plainText):
     return newP
 
 def encrypt(plainText, y, g, p):
-    blockMessage = []
-    for i in range (len(plainText)):
-        blockMessage.append(ord(plainText[i])+ord('A'))
-    print(blockMessage)
+    lenVal, message = makeBlockMessage(p-1, plainText)
+    print(message)
     # k = random.randint(0,p-1)
     k = 1520
     cipherA = g ** k % p
-    listB = []
-    for i in range (len(blockMessage)):
-        b = y ** k * blockMessage[i] % p
-        listB.append(str(b))
-        print(listB)
-        cipherB = "".join(listB)
-    return cipherA, int(cipherB)
+    cipherB = []
+    for i in range (len(message)):
+        b = y ** k * (message[i]) % p
+        cipherB.append(b)
+    # print(blockMessageToText(lenVal, cipherB))
+    return cipherA, cipherB, lenVal
 
-def decrypt(cipherA, cipherB, x, p):
-    invAX = cipherA ** (p-1-x) % p
-    cipherB = str(cipherB)
-    cipherB = list(cipherB)
+def decrypt(cipherA, cipherB, x, p, lenVal):
+    invAX = (cipherA ** (p-1-x)) % p
     msg = []
     for i in range (len(cipherB)):
-        w = int(cipherB[i]) * invAX % p % 26
-        msg.append(chr(w))
-        m = "".join(msg)
-    return m
+        w = (cipherB[i] * invAX) % p
+        msg.append(w)
+    print(msg)
+    return blockMessageToText(lenVal, msg)
+    
 
-print(encrypt("encrypt",1185,2,2357))
-# print(decrypt(1430,7116111257187623226513301976338611,1751,2357))
+print(encrypt("ENCRYPT",1185,2,2357))
+print(decrypt(1430,[1265, 1165, 1811, 73, 519, 619, 1884],1751,2357,2))
 # print(makePlain("encryption"))

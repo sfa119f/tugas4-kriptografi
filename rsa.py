@@ -30,7 +30,7 @@ def methodRsa(nValue, key, text, isEncrypt):
 # Mengenkripsi atau mendeskripsi text menggunakan algoritma RSA
   lenVal = lenValCipher(nValue)
   if isEncrypt: valArray = makeBlockMessage(lenVal, text)
-  else: valArray = strToBlockCipher(nValue, text)
+  else: valArray = strToBlockCipher(lenVal, text)
   res = []
   for i in range(len(valArray)):
     res.append(valArray[i] ** key % nValue)

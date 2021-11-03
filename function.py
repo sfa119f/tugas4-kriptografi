@@ -104,7 +104,7 @@ def strToBlockCipher(lenVal, strNum):
   temp = 10 ** lenVal
   res = []
   while len(strNum) != 0:
-    val = int(strNum[:4])
-    strNum = strNum[4:]
+    val = int(strNum[:lenVal])
+    strNum = strNum[lenVal:]
     res.append(val)
   return res

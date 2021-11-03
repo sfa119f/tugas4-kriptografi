@@ -54,7 +54,3 @@ def decryptElgamal(p, g, x, k, cipher):
         w = (blockB[i] * invAX) % p
         msg.append(w)
     return blockMessageToText(lenVal, msg)
-
-cipherA,cipherB = encryptElGamal("sudah pusing",1185,2357,2,1520)
-print("(" + str(cipherA) + "," + str(cipherB) + ")")
-print(decryptElgamal(2357,2,1751,1520,cipherB))

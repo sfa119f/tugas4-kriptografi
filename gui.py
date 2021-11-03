@@ -105,11 +105,17 @@ def downloadKey():
     except ValueError:
       tkinter.messagebox.showinfo('Error', 'G-key or P-key or X-key only accept integer value')
     else:
-      if not isElgamalValidatePGX(int(pkey.get()), int(gkey.get()), int(xkey.get())):
-        tkinter.messagebox.showinfo('Error', 'G-key or P-key or X-key is not acceptable')
+      if not isPrime(int(pkey.get())):
+        tkinter.messagebox.showinfo('Error', 'P-key only accept prime value')
+      elif not isElGamalValidateG(int(gkey.get()),int(pkey.get())):
+        tkinter.messagebox.showinfo('Error', 'G-key must meet the requirement g<p')
+      elif not isElGamalValidateX(int(xkey.get()),int(pkey.get())):
+        tkinter.messagebox.showinfo('Error', 'X-key must meet the requirement 1 <= x <= p-2')
+      elif not isElGamalValidateK(int(kkey.get()),int(pkey.get())):
+        tkinter.messagebox.showinfo('Error', 'K-key must meet the requirement 0 <= k <= p-1')
       else:
-        yVal, gVal, pValPb = makePublicKey(int(pkey.get()), int(gkey.get()), int(xkey.get()))
-        xVal, pValPv = makePrivateKey(int(xkey.get()), int(pkey.get()))
+        yVal, gVal, pValPb = makePublicKeyElGamal(int(pkey.get()), int(gkey.get()), int(xkey.get()))
+        xVal, pValPv = makePrivateKeyElGamal(int(xkey.get()), int(pkey.get()))
         pbKey = { 'yValue': yVal, 'gValue': gVal, 'pValue': pValPb }
         pvKey = { 'xValue': xVal, 'pValue': pValPv }
         makeKeyFile(pbKey, pvKey)
@@ -210,7 +216,7 @@ def convertText():
         tkinter.messagebox.showinfo('Error', 'G-key or P-key or X-key or K-key only accept integer value')
       else:
         if not isPrime(int(pkey.get())):
-          tkinter.messagebox.showinfo('Error', 'P-key or only accept prime value')
+          tkinter.messagebox.showinfo('Error', 'P-key only accept prime value')
         elif not isElGamalValidateG(int(gkey.get()),int(pkey.get())):
           tkinter.messagebox.showinfo('Error', 'G-key must meet the requirement g<p')
         elif not isElGamalValidateX(int(xkey.get()),int(pkey.get())):

@@ -53,9 +53,8 @@ def lenValCipher(n):
       lenVal += 2
   return lenVal
 
-def makeBlockMessage(nValue, text):
-# Membuat block message dari text dengan batas nValue
-  lenVal = lenValCipher(nValue)
+def makeBlockMessage(lenVal, text):
+# Membuat block message dari text dengan panjang lenVal
   if len(text) % (lenVal // 2) != 0:
     text += 'X' * ((lenVal // 2) - (len(text) % (lenVal // 2)))
 
@@ -70,7 +69,7 @@ def makeBlockMessage(nValue, text):
         blockDigit = blockDigit * 100 + (ord(text[j]) - ord('A'))
       res.append(blockDigit)
   
-  return lenVal, res
+  return res
 
 def blockMessageToText(lenVal, mArray):
 # Convert block message to text
@@ -96,7 +95,7 @@ def blockCipherToStr(lenVal, cArray):
   res = ''
   for i in range(len(cArray)):
     temp = ''
-    for j in range(2*lenVal - len(str(cArray[i]))):
+    for j in range(lenVal - len(str(cArray[i]))):
       temp += '0'
     res += (temp + str(cArray[i]))
   return res

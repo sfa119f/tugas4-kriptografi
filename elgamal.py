@@ -1,5 +1,4 @@
 from function import *
-import random
 
 def isElgamalValidatePGX(p,g,x):
 # Melakukan validasi nilai p, g, x sesuai dengan syarat algoritma
@@ -9,7 +8,7 @@ def isElgamalValidatePGX(p,g,x):
         return False
 
 def isElgalamValidateK(k,p):
-# Melakukan validasi nilai p, g, x sesuai dengan syarat algoritma
+# Melakukan validasi nilai k sesuai dengan syarat algoritma
     if (k >= 0 and k <= p-1):
         return True
     else:

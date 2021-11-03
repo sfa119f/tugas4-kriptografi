@@ -1,7 +1,7 @@
-from function import isPrime
+from function import isPrime, lenValCipher, makeBlockMessage, blockCipherToStr, strToBlockCipher, blockMessageToText
 
 def isRsaValidatePQ(pValue, qValue):
-  if isPrime(pValue) && isPrime(qValue):
+  if isPrime(pValue) and isPrime(qValue):
     return True
   return False
 
@@ -26,37 +26,14 @@ def makePvKeyRsa(pValue, qValue, eKey):
     else: k += 1
   return (1 + (k * phi)) // eKey, (pValue * qValue)
 
-def blockMessage(n):
-  if n == 0: return 0
-  if n == 1: return 10
-  else: return blockMessage(n - 2) * 100 + 25
-
-def methodRsa(nValue, key, text):
+def methodRsa(nValue, key, text, isEncrypt):
 # Mengenkripsi atau mendeskripsi text menggunakan algoritma RSA
-  if nValue < 25:
-    lenVal = 1
-  else:
-    lenVal = 2
-    while blockMessage(lenVal + 2) < nValue:
-      lenVal += 2
-  
-  if len(text) % (lenVal // 2) != 0:
-    text += 'X' * ((lenVal // 2) - (len(text) % (lenVal // 2)))
-
-  res = ''
-  for i in range(0, len(text), (lenVal // 2)):
-    if lenVal == 1:
-      res += chr(((((ord(text[i]) - ord('A')) // 10) ** key) % nValue + ord('A')) * 10 + ((((ord(text[i]) - ord('A')) % 10) ** key) % nValue + ord('A')))
-    else:
-      blockDigit = 0
-      for j in range(i, i + (lenVal // 2)):
-        blockDigit = blockDigit * 100 + (ord(text[j]) - ord('A'))
-      resDigit = blockDigit ** key % nValue
-      tres = ''
-      if resDigit // (10 ** (lenVal - 2)) == 0:
-        tres = 'A'
-      while resDigit != 0:
-        tres = chr(resDigit % 100 + ord('A')) + tres
-        resDigit //= 100
-      res += tres
-  return res
+  lenVal = lenValCipher(nValue)
+  if isEncrypt: valArray = makeBlockMessage(lenVal, text)
+  else: valArray = strToBlockCipher(nValue, text)
+  res = []
+  for i in range(len(valArray)):
+    res.append(valArray[i] ** key % nValue)
+  print(res)
+  if isEncrypt: return blockCipherToStr(lenVal, res)
+  else: return blockMessageToText(lenVal, res)

@@ -1,35 +1,40 @@
 from function import gcd, lcm, invMod, lenValCipher, makeBlockMessage, blockCipherToStr, strToBlockCipher, blockMessageToText
 
-def isPaillerValidatePQ(pValue, qValue):
+def isPaillierValidatePQ(pValue, qValue):
+# Mengvalidasi nilai P dan Q Paillier
   if gcd((pValue * qValue), ((pValue - 1) * (qValue - 1))) == 1 and pValue * qValue >= 256:
     return True
   return False
 
-def isPaillerValidateG(gValue, nValue):
+def isPaillierValidateG(gValue, nValue):
+# Mengvalidasi nilai G Paillier
   if gValue < (nValue ** 2):
     return True
   return False
 
-def isPaillerValidateR(rValue):
+def isPaillierValidateR(rValue):
+# Mengvalidasi nilai R Paillier
   if gcd(rValue, nValue) == 1 and rValue >= 0 and rValue < nValue:
     return True
   return False
 
 def functionL(x, nValue):
+# Menghitung fungsi L(x) Paillier
   return (x - 1) // nValue
 
-def makePbKeyPailler(pValue, qValue, gValue):
-# Menghitung public key algoritma Pailler
+def makePbKeyPaillier(pValue, qValue, gValue):
+# Menghitung public key algoritma Paillier
   return gValue, (pValue * qValue)
 
-def makePvKeyPailler(pValue, qValue, gValue):
-# Menghitung private key algoritma Pailler
+def makePvKeyPaillier(pValue, qValue, gValue):
+# Menghitung private key algoritma Paillier
   nValue = pValue * qValue
   lamda = lcm(pValue - 1, qValue - 1)
   mu = invMod(functionL((gValue ** lamda) % (nValue ** 2), nValue), nValue)
   return lamda, mu
 
-def methodPailler(keyA, keyB, text, encrypt, rValue = None, nValue = None):
+def methodPaillier(keyA, keyB, text, encrypt, rValue = None, nValue = None):
+# Mengenkripsi atau mendeskripsi text menggunakan algoritma Paillier
   res = []
   if encrypt:
     mArray = makeBlockMessage(lenValCipher(keyB), text)

@@ -1,11 +1,13 @@
 from function import isPrime, lenValCipher, makeBlockMessage, blockCipherToStr, strToBlockCipher, blockMessageToText
 
 def isRsaValidatePQ(pValue, qValue):
+# Mengvalidasi nilai P dan Q RSA
   if isPrime(pValue) and isPrime(qValue):
     return True
   return False
 
 def isRsaValidateEkey(eKey, pValue, qValue):
+# Mengvalidasi nilai key E RSA
   phi = (pValue - 1) * (qValue - 1)
   if gcd(eKey, phi) == 1:
     return True

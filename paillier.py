@@ -1,4 +1,4 @@
-from function import gcd, lcm, invMod, lenValCipher, makeBlockMessage, blockCipherToStr, strToBlockCipher, blockMessageToText
+from function import *
 
 def isPaillierValidatePQ(pValue, qValue):
 # Mengvalidasi nilai P dan Q Paillier

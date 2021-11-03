@@ -1,4 +1,4 @@
-from function import isPrime, lenValCipher, makeBlockMessage, blockCipherToStr, strToBlockCipher, blockMessageToText
+from function import gcd, isPrime, lenValCipher, makeBlockMessage, blockCipherToStr, strToBlockCipher, blockMessageToText
 
 def isRsaValidatePQ(pValue, qValue):
 # Mengvalidasi nilai P dan Q RSA

@@ -96,9 +96,9 @@ def blockCipherToStr(lenVal, cArray):
   res = ''
   for i in range(len(cArray)):
     temp = ''
-    for j in range(str(cArray[i]) - lenVal):
+    for j in range(2*lenVal - len(str(cArray[i]))):
       temp += '0'
-    res += (temp + cArray[i])
+    res += (temp + str(cArray[i]))
   return res
 
 def strToBlockCipher(lenVal, strNum):
@@ -107,5 +107,5 @@ def strToBlockCipher(lenVal, strNum):
   while len(strNum) != 0:
     val = int(strNum[:4])
     strNum = strNum[4:]
-    res.append(0, val)
+    res.append(val)
   return res

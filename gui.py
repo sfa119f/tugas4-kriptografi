@@ -1,4 +1,7 @@
 from tkinter import *
+import tkinter.messagebox
+from rsa import *
+from paillier import *
 
 def clearKey():
 # Menghapus key yang ada di layar
@@ -23,13 +26,10 @@ def swapFunction():
     btnSwap.config(text='Change to Encrypt')
     labelInput.config(text='Cipher Text')
     labelOutput.config(text='Plain Text')
-    btnImport.config(state=DISABLED)
   else:
     btnSwap.config(text='Change to Decrypt')
     labelInput.config(text='Plain Text')
     labelOutput.config(text='Cipher Text')
-    if isFile.get():
-      btnImport.config(state=NORMAL)
   clearText()
   encrypt.set(not encrypt.get())
 
@@ -39,9 +39,71 @@ def copy():
   root.clipboard_append(textOutput.get('1.0', 'end-1c'))
   root.update()
 
+def showOutput(outputValue):
+  textOutput.config(state=NORMAL)
+  textOutput.delete('1.0', END)
+  textOutput.insert(tkinter.END, outputValue)
+  textOutput.config(state=DISABLED)
+
 def convertText():
 # Mengubah text untuk dienkripsi/dideskripsi
-  print('convertText')
+  if cipher.get() == 'X':
+    tkinter.messagebox.showinfo('Error', 'Cipher type not selected')
+  elif textInput.get('1.0', 'end-1c') == '':
+    tkinter.messagebox.showinfo('Error', 'No input available')
+  else:
+    if encrypt.get():
+      msg = ''.join(filter(str.isalpha, textInput.get('1.0', 'end-1c'))).upper()
+    else:
+      msg = textInput.get('1.0', 'end-1c')
+    if cipher.get() == 'RSA':
+      try:
+        int(key.get())
+        int(pkey.get())
+        int(qkey.get())
+      except ValueError:
+        tkinter.messagebox.showinfo('Error', 'Key or P-key or Q-key only accept integer value')
+      else:
+        if not isRsaValidatePQ(int(pkey.get()), int(qkey.get())):
+          tkinter.messagebox.showinfo('Error', 'P-key or Q-key only accept prime value')
+        elif not isRsaValidateEkey(int(key.get()), int(pkey.get()), int(qkey.get())):
+          tkinter.messagebox.showinfo('Error', 'Key must be relatively prime with phi value')
+        else:
+          if encrypt.get():
+            keyValue, nValue = makePbKeyRsa(int(pkey.get()), int(qkey.get()), int(key.get()))
+          else:
+            keyValue, nValue = makePvKeyRsa(int(pkey.get()), int(qkey.get()), int(key.get()))
+          output = methodRsa(nValue, keyValue, msg, encrypt.get())
+          showOutput(output)
+
+    elif cipher.get() == 'ElGamal':
+      print('ElGamal')
+
+    elif cipher.get() == 'Paillier':
+      try:
+        int(key.get())
+        int(pkey.get())
+        int(qkey.get())
+        if encrypt.get(): int(rkey.get())
+      except ValueError:
+        tkinter.messagebox.showinfo('Error', 'Key or P-key or Q-key or R-key only accept integer value')
+      else:
+        if not isPaillierValidatePQ(int(pkey.get()), int(qkey.get())):
+          tkinter.messagebox.showinfo('Error', 'P-key or Q-key must meet the requirements GCD(pq, (p-1)*(q-1)) = 1')
+        elif not isPaillierValidateG(int(key.get()), int(pkey.get()) * int(qkey.get())):
+          tkinter.messagebox.showinfo('Error', 'Key must meet the requirements Key < n^2')
+        elif encrypt.get() and not isPaillierValidateR(int(rkey.get()), int(pkey.get()) * int(qkey.get())):
+          tkinter.messagebox.showinfo('Error', 'R-Key must meet the requirement 0 <= r < n and GCD(r, n) = 1')
+        else:
+          if encrypt.get():
+            keyA, keyB = makePbKeyPaillier(int(pkey.get()), int(qkey.get()), int(key.get()))
+          else:
+            keyA, keyB = makePvKeyPaillier(int(pkey.get()), int(qkey.get()), int(key.get()))
+          output = methodPaillier(keyA, keyB, msg, encrypt.get(), rValue=int(rkey.get()), nValue=int(pkey.get()) * int(qkey.get()))
+          showOutput(output)
+
+    elif cipher.get() == 'ECC':
+      print('ECC')
 
 root = Tk()
 root.title('Cipher')
@@ -59,7 +121,7 @@ radioVCS = Radiobutton(root, text='RSA', variable=cipher, value='RSA')
 radioVCS.place(x=90, y=5)
 radioFVC = Radiobutton(root, text='ElGamal', variable=cipher, value='ElGamal')
 radioFVC.place(x=90, y=25)
-radioEVC = Radiobutton(root, text='Pailler', variable=cipher, value='Pailler')
+radioEVC = Radiobutton(root, text='Paillier', variable=cipher, value='Paillier')
 radioEVC.place(x=260, y=5)
 radioPFC = Radiobutton(root, text='ECC', variable=cipher, value='ECC')
 radioPFC.place(x=260, y=25)
@@ -76,8 +138,12 @@ pkey = Entry(root, width=20)
 pkey.place(x=320, y=50)
 qkeyLabel = Label(text='q-value')
 qkeyLabel.place(x=460, y=50)
-qkey = Entry(root, width=30)
+qkey = Entry(root, width=20)
 qkey.place(x=540, y=50)
+rkeyLabel = Label(text='r-value')
+rkeyLabel.place(x=680, y=50)
+rkey = Entry(root, width=20)
+rkey.place(x=760, y=50)
 
 # Button delete key dan download key
 btnClearKey = Button(root, text='Clear Key', command=clearKey, bg='grey85')

@@ -2,7 +2,7 @@ from function import gcd, lcm, invMod, lenValCipher, makeBlockMessage, blockCiph
 
 def isPaillierValidatePQ(pValue, qValue):
 # Mengvalidasi nilai P dan Q Paillier
-  if gcd((pValue * qValue), ((pValue - 1) * (qValue - 1))) == 1 and pValue * qValue >= 256:
+  if gcd((pValue * qValue), ((pValue - 1) * (qValue - 1))) == 1:
     return True
   return False
 
@@ -12,7 +12,7 @@ def isPaillierValidateG(gValue, nValue):
     return True
   return False
 
-def isPaillierValidateR(rValue):
+def isPaillierValidateR(rValue, nValue):
 # Mengvalidasi nilai R Paillier
   if gcd(rValue, nValue) == 1 and rValue >= 0 and rValue < nValue:
     return True

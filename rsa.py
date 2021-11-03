@@ -23,7 +23,6 @@ def makePvKeyRsa(pValue, qValue, eKey):
   cek = True
   k = 1
   while cek:
-    print((1 + (k * phi)) / eKey)
     if (1 + (k * phi)) / eKey == (1 + (k * phi)) // eKey: cek = False
     else: k += 1
   return (1 + (k * phi)) // eKey, (pValue * qValue)

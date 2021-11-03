@@ -1,16 +1,21 @@
 from function import *
 import random
 
+def isElgamalValidatePGX(p,g,x):
+# Melakukan validasi nilai p, g, x sesuai dengan syarat algoritma
+    if (isPrime(p) and g<p and x>=1 and x<=p-2):
+        return True
+    else:
+        return False
+
 def makePublicKey(p,g,x):
 # Membuat kunci publik algoritma elgamal
-    if(isPrime(p) and g<p and x>=1 and x<=p-2):
-        y = g ** x % p
-        return y,g,p
+    y = g ** x % p
+    return y,g,p
 
 def makePrivateKey(x,p):
 # Membuat kunci private algoritma elgamal
-    if(isPrime(p) and x>=1 and x<=p-2):
-        return x,p
+    return x,p
 
 def encrypt(plainText, y, g, p):
 # Melakukan enkripsi pesan menggunakan algoritma elgamal

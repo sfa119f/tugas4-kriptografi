@@ -29,11 +29,12 @@ def encrypt(plainText, y, g, p):
         b = y ** k * (blockMsg[i]) % p
         cipherB.append(b)
     listB = blockCipherToStr(2*lenVal, cipherB)
-    return cipherA, listB, lenVal
+    return cipherA, listB, lenVal, k
 
-def decrypt(cipherA, cipherB, x, p, lenVal):
+def decrypt(p, g, x, k, cipher, lenVal):
 # Melakukan dekripsi cipher menggunakan algoritma elgamal
-    blockB = strToBlockCipher(2*lenVal, cipherB)
+    blockB = strToBlockCipher(2*lenVal, cipher)
+    cipherA = g ** k % p
     invAX = (cipherA ** (p-1-x)) % p
     msg = []
     for i in range (len(blockB)):

@@ -36,7 +36,6 @@ def encrypt(plainText, y, g, p):
     for i in range (len(blockMsg)):
         b = y ** k * (blockMsg[i]) % p
         cipherB.append(b)
-    print(cipherB)
     listB = blockCipherToStr(2*lenVal, cipherB)
     return cipherA, listB, lenVal
 

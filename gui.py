@@ -2,6 +2,7 @@ from tkinter import *
 import tkinter.messagebox
 from rsa import *
 from paillier import *
+from elgamal import *
 
 def clearKeyBox():
   keyLabel.place_forget()
@@ -127,7 +128,31 @@ def convertText():
           showOutput(output)
 
     elif cipher.get() == 'ElGamal':
-      print('ElGamal')
+      try:
+        int(gkey.get())
+        int(pkey.get())
+        int(xkey.get())
+        int(kkey.get())
+      except ValueError:
+        tkinter.messagebox.showinfo('Error', 'G-key or P-key or X-key or K-key only accept integer value')
+      else:
+        if not isPrime(int(pkey.get())):
+          tkinter.messagebox.showinfo('Error', 'P-key or only accept prime value')
+        elif not isElGamalValidateG(int(gkey.get()),int(pkey.get())):
+          tkinter.messagebox.showinfo('Error', 'G-key must meet the requirement g<p')
+        elif not isElGamalValidateX(int(xkey.get()),int(pkey.get())):
+          tkinter.messagebox.showinfo('Error', 'X-key must meet the requirement 1 <= x <= p-2')
+        elif not isElGamalValidateK(int(kkey.get()),int(pkey.get())):
+          tkinter.messagebox.showinfo('Error', 'K-key must meet the requirement 0 <= k <= p-1')
+        else:
+          if(encrypt.get()):
+            yValue, gValue, pValue = makePublicKeyElGamal(int(gkey.get()),int(pkey.get()),int(xkey.get()))
+            output = encryptElGamal(msg, yValue, pValue, gValue, int(kkey.get()))
+            showOutput(output[1])
+          else:
+            xValue, pValue = makePrivateKeyElGamal(int(xkey.get()),int(pkey.get()))
+            output = decryptElgamal(pValue, int(gkey.get()), xValue, int(kkey.get()), msg)
+            showOutput(output)
 
     elif cipher.get() == 'Paillier':
       try:

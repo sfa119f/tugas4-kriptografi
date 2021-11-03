@@ -68,12 +68,17 @@ def clearKey():
 
 def makeKeyFile(pbKey, pvKey):
 # Membuat file json key
-  res = { 'publicKey': pbKey, 'privateKey': pvKey }
-  jsonString = json.dumps(res)
-  jsonFile = open("key.json", "w")
+  keyPb = { 'publicKey': pbKey }
+  keyPv = { 'privateKey': pvKey }
+  jsonString = json.dumps(keyPb)
+  jsonFile = open("publicKey.json", "w")
   jsonFile.write(jsonString)
   jsonFile.close()
-  tkinter.messagebox.showinfo('Success', 'Key file downloaded successfully')
+  jsonString = json.dumps(keyPv)
+  jsonFile = open("privateKey.json", "w")
+  jsonFile.write(jsonString)
+  jsonFile.close()
+  tkinter.messagebox.showinfo('Success', 'Public and Private key file downloaded successfully')
 
 def downloadKey():
 # Mendownload public key dan private key

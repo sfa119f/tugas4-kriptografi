@@ -8,6 +8,13 @@ def isElgamalValidatePGX(p,g,x):
     else:
         return False
 
+def isElgalamValidateK(k,p):
+# Melakukan validasi nilai p, g, x sesuai dengan syarat algoritma
+    if (k >= 0 and k <= p-1):
+        return True
+    else:
+        return False
+
 def makePublicKey(p,g,x):
 # Membuat kunci publik algoritma elgamal
     y = g ** x % p
@@ -17,7 +24,7 @@ def makePrivateKey(x,p):
 # Membuat kunci private algoritma elgamal
     return x,p
 
-def encrypt(plainText, y, g, p):
+def encrypt(plainText, y, g, p, k):
 # Melakukan enkripsi pesan menggunakan algoritma elgamal
     message = makePlain(plainText)
     lenVal = lenValCipher(p-1)

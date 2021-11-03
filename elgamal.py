@@ -1,17 +1,21 @@
-from function import blockCipherToStr, blockMessageToText, isPrime, makeBlockMessage, strToBlockCipher
+from function import blockCipherToStr, blockMessageToText, isPrime, lenValCipher, makeBlockMessage, strToBlockCipher
 from math import pow
 import random
 
 def makePublicKey(p,g,x):
+# Membuat kunci publik algoritma elgamal
     if(isPrime(p) and g<p and x>=1 and x<=p-2):
         y = g ** x % p
         return y,g,p
 
 def makePrivateKey(x,p):
+# Membuat kunci private algoritma elgamal
     if(isPrime(p) and x>=1 and x<=p-2):
         return x,p
 
 def makePlain(plainText):
+# Membuat plainText sesuai dengan format yang diinginkan yakni
+# menghilangkan angka dan symbol serta membuat huruf menjadi uppercase
     p = []
     plainText = plainText.upper()
     plain = list(plainText) 
@@ -22,19 +26,23 @@ def makePlain(plainText):
     return newP
 
 def encrypt(plainText, y, g, p):
+# Melakukan enkripsi pesan menggunakan algoritma elgamal
     message = makePlain(plainText)
-    lenVal, blockMsg = makeBlockMessage(p-1, message)
+    lenVal = lenValCipher(p-1)
+    blockMsg = makeBlockMessage(lenVal,message)
     k = random.randint(0,p-1)
     cipherA = g ** k % p
     cipherB = []
     for i in range (len(blockMsg)):
         b = y ** k * (blockMsg[i]) % p
         cipherB.append(b)
-    listB = blockCipherToStr(lenVal, cipherB)
+    print(cipherB)
+    listB = blockCipherToStr(2*lenVal, cipherB)
     return cipherA, listB, lenVal
 
 def decrypt(cipherA, cipherB, x, p, lenVal):
-    blockB = strToBlockCipher(lenVal, cipherB)
+# Melakukan dekripsi cipher menggunakan algoritma elgamal
+    blockB = strToBlockCipher(2*lenVal, cipherB)
     invAX = (cipherA ** (p-1-x)) % p
     msg = []
     for i in range (len(blockB)):
@@ -44,6 +52,6 @@ def decrypt(cipherA, cipherB, x, p, lenVal):
     
 y,g,p = makePublicKey(2357,2,1751)
 x,p = makePrivateKey(1751,2357)
-cipherA,cipherB,lenVal = encrypt("hello alice",y,g,p)
+cipherA,cipherB,lenVal = encrypt("teknik informatika",y,g,p)
 print("(" + str(cipherA) + "," + str(cipherB) + ")")
 print(decrypt(cipherA,cipherB,x,p,lenVal))

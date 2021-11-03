@@ -106,7 +106,7 @@ def downloadKey():
       tkinter.messagebox.showinfo('Error', 'G-key or P-key or X-key only accept integer value')
     else:
       if not isElgamalValidatePGX(int(pkey.get()), int(gkey.get()), int(xkey.get())):
-        tkinter.messagebox.showinfo('Error', 'G-key or P-key or X-key is not acceptable'
+        tkinter.messagebox.showinfo('Error', 'G-key or P-key or X-key is not acceptable')
       else:
         yVal, gVal, pValPb = makePublicKey(int(pkey.get()), int(gkey.get()), int(xkey.get()))
         xVal, pValPv = makePrivateKey(int(xkey.get()), int(pkey.get()))

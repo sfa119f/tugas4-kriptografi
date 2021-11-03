@@ -1,5 +1,4 @@
-from function import blockCipherToStr, blockMessageToText, isPrime, lenValCipher, makeBlockMessage, strToBlockCipher
-from math import pow
+from function import *
 import random
 
 def makePublicKey(p,g,x):
@@ -12,18 +11,6 @@ def makePrivateKey(x,p):
 # Membuat kunci private algoritma elgamal
     if(isPrime(p) and x>=1 and x<=p-2):
         return x,p
-
-def makePlain(plainText):
-# Membuat plainText sesuai dengan format yang diinginkan yakni
-# menghilangkan angka dan symbol serta membuat huruf menjadi uppercase
-    p = []
-    plainText = plainText.upper()
-    plain = list(plainText) 
-    for char in plain:
-        if (char.isalpha()):
-            p.append(char)
-        newP = "".join(p) 
-    return newP
 
 def encrypt(plainText, y, g, p):
 # Melakukan enkripsi pesan menggunakan algoritma elgamal
@@ -48,9 +35,3 @@ def decrypt(cipherA, cipherB, x, p, lenVal):
         w = (blockB[i] * invAX) % p
         msg.append(w)
     return blockMessageToText(lenVal, msg)
-    
-y,g,p = makePublicKey(2357,2,1751)
-x,p = makePrivateKey(1751,2357)
-cipherA,cipherB,lenVal = encrypt("teknik informatika",y,g,p)
-print("(" + str(cipherA) + "," + str(cipherB) + ")")
-print(decrypt(cipherA,cipherB,x,p,lenVal))

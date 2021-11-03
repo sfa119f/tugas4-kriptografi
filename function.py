@@ -92,6 +92,7 @@ def blockMessageToText(lenVal, mArray):
   return res
 
 def blockCipherToStr(lenVal, cArray):
+# Membuat semua panjang dari blok cipher menjadi sama panjang
   res = ''
   for i in range(len(cArray)):
     temp = ''
@@ -101,6 +102,7 @@ def blockCipherToStr(lenVal, cArray):
   return res
 
 def strToBlockCipher(lenVal, strNum):
+# Mengembalikan panjang dari masing-masing blok cipher ke semula
   temp = 10 ** lenVal
   res = []
   while len(strNum) != 0:
@@ -108,3 +110,15 @@ def strToBlockCipher(lenVal, strNum):
     strNum = strNum[lenVal:]
     res.append(val)
   return res
+
+def makePlain(plainText):
+# Membuat plainText sesuai dengan format yang diinginkan yakni
+# menghilangkan angka dan symbol serta membuat huruf menjadi uppercase
+    p = []
+    plainText = plainText.upper()
+    plain = list(plainText) 
+    for char in plain:
+        if (char.isalpha()):
+            p.append(char)
+        newP = "".join(p) 
+    return newP

@@ -34,6 +34,5 @@ def methodRsa(nValue, key, text, isEncrypt):
   res = []
   for i in range(len(valArray)):
     res.append(valArray[i] ** key % nValue)
-  print(res)
   if isEncrypt: return blockCipherToStr(lenVal, res)
   else: return blockMessageToText(lenVal, res)
